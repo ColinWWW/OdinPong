@@ -114,6 +114,17 @@ main ::proc() {
 		Update(&ball)
 		UpdatePlayer(&player)
 		UpdateCpuPaddle(&cpuPaddle,&ball)
+
+		if rl.CheckCollisionCircleRec(rl.Vector2{ball.x, ball.y}, ball.radius, 
+			rl.Rectangle{player.x, player.y, player.width, player.height}) {
+			ball.speed_x *= -1
+		}
+
+		if rl.CheckCollisionCircleRec(rl.Vector2{ball.x, ball.y}, ball.radius,
+			rl.Rectangle{cpuPaddle.x, cpuPaddle.y, cpuPaddle.width, cpuPaddle.height}) {
+			ball.speed_x *= -1
+		}
+
 		rl.ClearBackground(rl.RAYWHITE)	
 		rl.DrawLine(screen_width/2, 0, screen_width/2, screen_height, rl.GRAY)
 		DrawBall(ball)
