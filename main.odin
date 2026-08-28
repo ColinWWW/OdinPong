@@ -60,10 +60,22 @@ UpdatePlayer :: proc(player : ^Paddle){
 }
 
 
+UpdateCpuPaddle :: proc(cpuPaddle: ^Paddle, ball: ^Ball) {
+	if (cpuPaddle.y + cpuPaddle.height/2 > ball.y) {
+		cpuPaddle.y = cpuPaddle.y - f32(cpuPaddle.speed_y)
+	}
+
+	if (cpuPaddle.y + cpuPaddle.height/2 <= ball.y) {
+		cpuPaddle.y = cpuPaddle.y + f32(cpuPaddle.speed_y)
+	}
+}
+
+
 
 
 player : Paddle
 ball : Ball
+cpuPaddle : Paddle
 
 main ::proc() {
 	fmt.println("Starting the Game")	
@@ -86,6 +98,14 @@ main ::proc() {
 	player.speed_y = 7
 
 
+	cpuPaddle.x = f32(screen_width - 40)
+	cpuPaddle.y = f32(screen_height) / 2 - 60
+	cpuPaddle.height= 15
+	cpuPaddle.width = 125
+	cpuPaddle.speed_y = 7
+
+
+
 
 
 
@@ -93,14 +113,13 @@ main ::proc() {
 		rl.BeginDrawing()
 		Update(&ball)
 		UpdatePlayer(&player)
-
+		UpdateCpuPaddle(&cpuPaddle,&ball)
 		rl.ClearBackground(rl.RAYWHITE)	
 		rl.DrawLine(screen_width/2, 0, screen_width/2, screen_height, rl.GRAY)
 		DrawBall(ball)
-		// Player
 		rl.DrawRectangle(i32(player.x), i32(player.y), i32(player.width), i32(player.height), rl.SKYBLUE)
 		// Computer
-		rl.DrawRectangle(screen_width - 40, screen_height/2 - 60, 15, 125, rl.SKYBLUE)
+		rl.DrawRectangle(i32(cpuPaddle.x), i32(cpuPaddle.y), i32(cpuPaddle.height), i32(cpuPaddle.width), rl.SKYBLUE)
 
 		rl.EndDrawing()
 			
