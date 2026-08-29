@@ -68,6 +68,14 @@ UpdateCpuPaddle :: proc(cpuPaddle: ^Paddle, ball: ^Ball) {
 	if (cpuPaddle.y + cpuPaddle.height/2 <= ball.y) {
 		cpuPaddle.y = cpuPaddle.y + f32(cpuPaddle.speed_y)
 	}
+
+	if (cpuPaddle.y <= 0) {
+		cpuPaddle.y = 0
+	}
+
+	if (cpuPaddle.y + cpuPaddle.height >= f32(rl.GetScreenHeight())){
+		cpuPaddle.y = f32(rl.GetScreenHeight()) - cpuPaddle.height
+	}
 }
 
 
@@ -100,8 +108,8 @@ main ::proc() {
 
 	cpuPaddle.x = f32(screen_width - 40)
 	cpuPaddle.y = f32(screen_height) / 2 - 60
-	cpuPaddle.height= 15
-	cpuPaddle.width = 125
+	cpuPaddle.height= 125
+	cpuPaddle.width = 15
 	cpuPaddle.speed_y = 7
 
 
@@ -130,7 +138,7 @@ main ::proc() {
 		DrawBall(ball)
 		rl.DrawRectangle(i32(player.x), i32(player.y), i32(player.width), i32(player.height), rl.SKYBLUE)
 		// Computer
-		rl.DrawRectangle(i32(cpuPaddle.x), i32(cpuPaddle.y), i32(cpuPaddle.height), i32(cpuPaddle.width), rl.SKYBLUE)
+		rl.DrawRectangle(i32(cpuPaddle.x), i32(cpuPaddle.y), i32(cpuPaddle.width), i32(cpuPaddle.height), rl.SKYBLUE)
 
 		rl.EndDrawing()
 			
