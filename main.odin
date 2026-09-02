@@ -7,6 +7,9 @@ screen_width: i32 : 1280
 screen_height : i32 : 800
 fps : i32 = 60
 
+player_score : i32 = 0
+cpu_score : i32 = 0
+
 Ball :: struct {
 	x : f32,
 	y : f32,
@@ -36,9 +39,15 @@ Update :: proc(ball : ^Ball) {
 		ball.speed_y *= -1
 	}
 	
-	if (ball.x + ball.radius >= f32(rl.GetScreenWidth()) || ball.x - ball.radius <= 0){
-		ball.speed_x *= -1
-	}	
+	if ball.x + ball.radius >= f32(rl.GetScreenWidth()) {
+		ResetBall(ball)
+		player_score += 1
+	} 
+
+	if ball.x - ball.radius <= 0 {
+		ResetBall(ball)
+		cpu_score += 1
+	}
 }
 
 UpdatePlayer :: proc(player : ^Paddle){
@@ -79,6 +88,15 @@ UpdateCpuPaddle :: proc(cpuPaddle: ^Paddle, ball: ^Ball) {
 }
 
 
+ResetBall ::proc(ball: ^Ball) {
+	ball.x = f32(rl.GetScreenWidth()/2)
+	ball.y = f32(rl.GetScreenHeight()/2)
+	speed_choices :=[2]i32{1,-1}
+	ball.speed_x *= speed_choices[rl.GetRandomValue(0,1)]
+	ball.speed_y *= speed_choices[rl.GetRandomValue(0,1)]
+}
+
+
 
 
 player : Paddle
@@ -110,7 +128,7 @@ main ::proc() {
 	cpuPaddle.y = f32(screen_height) / 2 - 60
 	cpuPaddle.height= 125
 	cpuPaddle.width = 15
-	cpuPaddle.speed_y = 7
+	cpuPaddle.speed_y = 5
 
 
 
@@ -136,9 +154,12 @@ main ::proc() {
 		rl.ClearBackground(rl.RAYWHITE)	
 		rl.DrawLine(screen_width/2, 0, screen_width/2, screen_height, rl.GRAY)
 		DrawBall(ball)
+		// Drawing my Player
 		rl.DrawRectangle(i32(player.x), i32(player.y), i32(player.width), i32(player.height), rl.SKYBLUE)
 		// Computer
 		rl.DrawRectangle(i32(cpuPaddle.x), i32(cpuPaddle.y), i32(cpuPaddle.width), i32(cpuPaddle.height), rl.SKYBLUE)
+		rl.DrawText(rl.TextFormat("%i", player_score), screen_width/4 - 20,20,80,rl.RED)
+		rl.DrawText(rl.TextFormat("%i", cpu_score), 3 * screen_width/4 - 20, 20, 80, rl.RED)
 
 		rl.EndDrawing()
 			
