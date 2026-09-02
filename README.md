@@ -4,4 +4,4 @@ I followed along this video and ported it over to Odin. Some of the big things I
 understand while c++ does this implicitly. So I probably have made some mistakes or inconsistency's in that department. Also obviously the fact that c++ using classes
 and so I was trying to just have the structs hold data.
 
-[](https://github.com/ColinWWW/OdinPong/blob/main/OdinPong.gif)
+![](https://github.com/ColinWWW/OdinPong/blob/main/OdinPong.gif)
